@@ -1,7 +1,7 @@
 
 # ------------------------------------------------------------------------------
 # AXI JTAG read and write
-# Original code from D. Hawkings
+# Original code from D. Hawkins
 # Adapted by S. Janamian
 # ------------------------------------------------------------------------------
 
