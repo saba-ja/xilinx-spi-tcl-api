@@ -798,12 +798,17 @@ proc spi_rxfifo_occupancy_read {base_addr} {
 #
 # Description:
 #   This procedure allows you to write to the GIE (Global Interrupt Enable) bit in the Device Global Interrupt Enable Register.
-#   When the GIE bit is set to 1, it allows passing all individually enabled interrupts to the interrupt controller.
-#   When the GIE bit is set to 0, it disables passing interrupts to the interrupt controller.
+#   When the GIE bit 31 is set to 1, it allows passing all individually enabled interrupts to the interrupt controller.
+#   When the GIE bit 31 is set to 0, it disables passing interrupts to the interrupt controller.
 #
 proc spi_dgier_gie_write {base_addr value} {
     set dgier_addr [expr {$base_addr + 0x1C}]
-    axi_write $dgier_addr $value
+    set dgier_value [axi_read $dgier_addr] ;# Read the current value first
+    
+    # Clear and set the 32nd bit (bit 31)
+    set new_dgier_value [expr {($dgier_value & ~(1 << 31)) | ($value << 31)}]
+    
+    axi_write $dgier_addr $new_dgier_value ;# Write the modified value back
 }
 
 # Read the GIE (Global Interrupt Enable) bit from the Device Global Interrupt Enable Register
